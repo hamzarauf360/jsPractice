@@ -1,27 +1,31 @@
 import * as React from 'react';
 import { Button,ScrollView,Text, View, StyleSheet,Switch } from 'react-native';
-import {Constants} from 'expo'; // to use in different devices and automatically detect the screen size
+import Constants from 'expo-constants';
 let id = 0; // id for each list item
 
-const styles = StyleSheet.create({ // to reuse the style
+const styles = StyleSheet.create({ // to save the styles for reusability
   todoContainer : {
-    flexDirection:'row',  // places item in a row manner in a view
-    alignItems:'center',	// places items with eachother
+    flexDirection:'row', 
+    alignItems:'center',
   },
 
- /* appContainer: {
+  appContainer: {
     paddingTop: Constants.statusBarHeight,
-  },*/
+  },
+  fill:{
+      flex:1,
+}
+   
 })
 
 
-const Todo = (
+const Todo = ( // a component
   props 
 ) => (
-  <View style={styles.todoContainer}>  // for style set it to jsx code or stylesheet
-    <Switch value={props.todo.checked} onValueChange={props.onToggle}/> // the replacement of checkbox in reacnative
+  <View style={styles.todoContainer}> 
+    <Switch value={props.todo.checked} onValueChange={props.onToggle}/>
     <Button onPress={props.onDelete} title = "delete" />
-    <Text>{props.todo.text}</Text> // to display some text
+    <Text>{props.todo.text}</Text>
 
 
   </View>
@@ -65,11 +69,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    // here goes the  declartive code
-    //we iterate the whole todo list and for each todo we create a react native component
-    // the upper case Todo is a react native component
+    // here goes the html declartive
+    //we iterate the whole todo list and for each todo we create a react component
+    // the upper case Todo is a react component
     return (
-      <View styles={styles.appContainer}> //in place of a div
+      <View style={[styles.appContainer,styles.fill]}> // view in place of div
         <Text>My ToDo App</Text>
         <Text>TODO COUNT: {this.state.todos.length} </Text>
         <Text>
@@ -77,8 +81,8 @@ export default class App extends React.Component {
           UNCHECKED TODO COUNT:{" "}
           {this.state.todos.filter(todo => !todo.checked).length}{" "}
         </Text>
-        <Button onPress={this.addTodo.bind(this)} title = "NEW TODO" /> // for a button we use on press rather than onClick and for text use title
-        <ScrollView>
+        <Button onPress={this.addTodo.bind(this)} title = "NEW TODO" /> //  button onlclick replaced with onpress and title
+        <ScrollView style = {styles.fill}>
           {this.state.todos.map(todo => (
             <Todo
               onToggle={() => this.toggleTodo(todo.id)}
